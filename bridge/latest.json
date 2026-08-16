@@ -1,6 +1,5 @@
 {
-  "version": "0.5.0",
+  "version": "0.5.1",
   "published": "2026-08-16",
-  "notes": "Permanent manifest-based WEMOTE updater is live. Future releases embed only changed files.",
   "files": []
 }
