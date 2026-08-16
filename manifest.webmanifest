@@ -1,0 +1,9 @@
+{
+  "name": "WEMOTE v0.4.2",
+  "short_name": "WEMOTE",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#8f8f8f",
+  "theme_color": "#c7c7c7",
+  "description": "Remote Wemo controller with Pet Feeder and Light Timer modes"
+}
