@@ -1,9 +1,6 @@
 {
   "version": "0.5.0",
   "published": "2026-08-16",
-  "notes": "Permanent GitHub-backed one-click updater bootstrap.",
-  "files": [
-    {"path":"app\\__init__.py","url":"https://raw.githubusercontent.com/sczahra/wemote/main/bridge/app/__init__.py","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
-    {"path":"app\\main.py","url":"https://raw.githubusercontent.com/sczahra/wemote/main/bridge/app/main.py","sha256":"PLACEHOLDER"}
-  ]
+  "notes": "Permanent manifest-based WEMOTE updater is live. Future releases embed only changed files.",
+  "files": []
 }
