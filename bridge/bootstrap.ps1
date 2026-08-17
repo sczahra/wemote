@@ -1,54 +1,67 @@
 param([string]$Root)
-$ErrorActionPreference="Stop"
-if(-not $Root){$Root=(Get-Location).Path}
-if(-not(Test-Path(Join-Path $Root "FIRST_RUN.cmd"))){
-  throw "Run this bootstrap from inside the WEMOTE folder beside FIRST_RUN.cmd."
+$ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
+if (-not $Root) { $Root = (Get-Location).Path }
+if (-not (Test-Path (Join-Path $Root "FIRST_RUN.cmd"))) {
+    throw "Run this bootstrap from inside the WEMOTE folder beside FIRST_RUN.cmd."
 }
-$utf8=New-Object System.Text.UTF8Encoding($false)
+$utf8 = New-Object System.Text.UTF8Encoding($false)
+$Base = "https://raw.githubusercontent.com/sczahra/wemote/main/bridge"
 
 Write-Host ""
 Write-Host "==========================================" -ForegroundColor DarkGray
-Write-Host "      WEMOTE v0.5.1 UPDATER BOOTSTRAP" -ForegroundColor Cyan
+Write-Host "      WEMOTE v0.5.2 REMOTE BOOTSTRAP" -ForegroundColor Cyan
 Write-Host "==========================================" -ForegroundColor DarkGray
 Write-Host ""
 
-# Install permanent updater files.
-[IO.File]::WriteAllBytes((Join-Path $Root "update_wemote.ps1"),[Convert]::FromBase64String("JEVycm9yQWN0aW9uUHJlZmVyZW5jZSA9ICJTdG9wIgokUHJvZ3Jlc3NQcmVmZXJlbmNlID0gIlNpbGVudGx5Q29udGludWUiCgokUm9vdCA9IFNwbGl0LVBhdGggLVBhcmVudCAkTXlJbnZvY2F0aW9uLk15Q29tbWFuZC5QYXRoCiRWZXJzaW9uRmlsZSA9IEpvaW4tUGF0aCAkUm9vdCAiVkVSU0lPTiIKJFNvdXJjZUZpbGUgPSBKb2luLVBhdGggJFJvb3QgInVwZGF0ZV9zb3VyY2UudHh0IgokQmFja3VwcyA9IEpvaW4tUGF0aCAkUm9vdCAiYmFja3VwcyIKJFRlbXAgPSBKb2luLVBhdGggJGVudjpURU1QICgid2Vtb3RlLXVwZGF0ZS0iICsgW2d1aWRdOjpOZXdHdWlkKCkuVG9TdHJpbmcoIk4iKSkKCmZ1bmN0aW9uIEN1cnJlbnQtVmVyc2lvbiB7CiAgICBpZiAoVGVzdC1QYXRoICRWZXJzaW9uRmlsZSkgeyByZXR1cm4gKEdldC1Db250ZW50ICRWZXJzaW9uRmlsZSAtUmF3KS5UcmltKCkgfQogICAgcmV0dXJuICIwLjAuMCIKfQpmdW5jdGlvbiBDb21wYXJlLVZlcnNpb24oW3N0cmluZ10kQSxbc3RyaW5nXSRCKSB7CiAgICB0cnkgeyByZXR1cm4gKFt2ZXJzaW9uXSRBKS5Db21wYXJlVG8oW3ZlcnNpb25dJEIpIH0KICAgIGNhdGNoIHsgcmV0dXJuIFtzdHJpbmddOjpDb21wYXJlKCRBLCRCLCR0cnVlKSB9Cn0KZnVuY3Rpb24gU3RvcC1XZW1vdGUgewogICAgdHJ5IHsKICAgICAgICAkY29ubnMgPSBHZXQtTmV0VENQQ29ubmVjdGlvbiAtTG9jYWxQb3J0IDg3NjUgLVN0YXRlIExpc3RlbiAtRXJyb3JBY3Rpb24gU2lsZW50bHlDb250aW51ZQogICAgICAgIGZvcmVhY2ggKCRjIGluICRjb25ucykgewogICAgICAgICAgICAkcCA9IEdldC1DaW1JbnN0YW5jZSBXaW4zMl9Qcm9jZXNzIC1GaWx0ZXIgIlByb2Nlc3NJZD0kKCRjLk93bmluZ1Byb2Nlc3MpIiAtRXJyb3JBY3Rpb24gU2lsZW50bHlDb250aW51ZQogICAgICAgICAgICBpZiAoJHAgLWFuZCAoJHAuQ29tbWFuZExpbmUgLW1hdGNoICJ1dmljb3JuIikgLWFuZCAoJHAuQ29tbWFuZExpbmUgLW1hdGNoICJhcHBcLm1haW4iKSkgewogICAgICAgICAgICAgICAgU3RvcC1Qcm9jZXNzIC1JZCAkYy5Pd25pbmdQcm9jZXNzIC1Gb3JjZSAtRXJyb3JBY3Rpb24gU2lsZW50bHlDb250aW51ZQogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfSBjYXRjaCB7fQp9CmZ1bmN0aW9uIFN0YXJ0LVdlbW90ZSB7CiAgICAkcnVubmVyID0gSm9pbi1QYXRoICRSb290ICJSVU5fQ09OVFJPTExFUi5jbWQiCiAgICBpZiAoVGVzdC1QYXRoICRydW5uZXIpIHsgU3RhcnQtUHJvY2VzcyAtRmlsZVBhdGggJHJ1bm5lciAtV29ya2luZ0RpcmVjdG9yeSAkUm9vdCB9Cn0KCldyaXRlLUhvc3QgIiIKV3JpdGUtSG9zdCAiPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09IiAtRm9yZWdyb3VuZENvbG9yIERhcmtHcmF5CldyaXRlLUhvc3QgIiAgICAgICAgICBXRU1PVEUgT05FLUNMSUNLIFVQREFURSIgLUZvcmVncm91bmRDb2xvciBDeWFuCldyaXRlLUhvc3QgIj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSIgLUZvcmVncm91bmRDb2xvciBEYXJrR3JheQpXcml0ZS1Ib3N0ICIiCgokY3VycmVudCA9IEN1cnJlbnQtVmVyc2lvbgpXcml0ZS1Ib3N0ICJJbnN0YWxsZWQ6ICRjdXJyZW50IgokZmVlZCA9IChHZXQtQ29udGVudCAkU291cmNlRmlsZSAtUmF3KS5UcmltKCkKCnRyeSB7ICRtYW5pZmVzdCA9IEludm9rZS1SZXN0TWV0aG9kIC1VcmkgJGZlZWQgLVRpbWVvdXRTZWMgMjAgfQpjYXRjaCB7CiAgICBXcml0ZS1Ib3N0ICJDb3VsZCBub3QgcmVhY2ggR2l0SHViLiBOb3RoaW5nIHdhcyBjaGFuZ2VkLiIgLUZvcmVncm91bmRDb2xvciBZZWxsb3cKICAgIGV4aXQgMgp9CgokbGF0ZXN0ID0gW3N0cmluZ10kbWFuaWZlc3QudmVyc2lvbgpXcml0ZS1Ib3N0ICJMYXRlc3Q6ICAgICRsYXRlc3QiCmlmICgoQ29tcGFyZS1WZXJzaW9uICRjdXJyZW50ICRsYXRlc3QpIC1nZSAwKSB7CiAgICBXcml0ZS1Ib3N0ICJBbHJlYWR5IHVwIHRvIGRhdGUuIiAtRm9yZWdyb3VuZENvbG9yIEdyZWVuCiAgICBleGl0IDAKfQoKTmV3LUl0ZW0gLUl0ZW1UeXBlIERpcmVjdG9yeSAtRm9yY2UgLVBhdGggJFRlbXAgfCBPdXQtTnVsbAokZG93bmxvYWRlZD1AKCkKCmZvcmVhY2goJGYgaW4gJG1hbmlmZXN0LmZpbGVzKXsKICAgICRyZWw9W3N0cmluZ10kZi5wYXRoCiAgICBpZigkcmVsIC1saWtlICJkYXRhXCoiIC1vciAkcmVsIC1saWtlICIudmVudlwqIiAtb3IgJHJlbCAtbGlrZSAiYmFja3Vwc1wqIiAtb3IgJHJlbCAtbGlrZSAidG9vbHNcKiIpewogICAgICAgIHRocm93ICJQcm90ZWN0ZWQgcGF0aCBpbiB1cGRhdGU6ICRyZWwiCiAgICB9CiAgICAkZGVzdD1Kb2luLVBhdGggJFRlbXAgJHJlbAogICAgJHBhcmVudD1TcGxpdC1QYXRoIC1QYXJlbnQgJGRlc3QKICAgIGlmKCRwYXJlbnQpe05ldy1JdGVtIC1JdGVtVHlwZSBEaXJlY3RvcnkgLUZvcmNlIC1QYXRoICRwYXJlbnQgfCBPdXQtTnVsbH0KICAgIEludm9rZS1XZWJSZXF1ZXN0IC1VcmkgKFtzdHJpbmddJGYudXJsKSAtT3V0RmlsZSAkZGVzdCAtVGltZW91dFNlYyA2MAogICAgJGFjdHVhbD0oR2V0LUZpbGVIYXNoICRkZXN0IC1BbGdvcml0aG0gU0hBMjU2KS5IYXNoLlRvTG93ZXJJbnZhcmlhbnQoKQogICAgJGV4cGVjdGVkPShbc3RyaW5nXSRmLnNoYTI1NikuVG9Mb3dlckludmFyaWFudCgpCiAgICBpZigkYWN0dWFsIC1uZSAkZXhwZWN0ZWQpe3Rocm93ICJWZXJpZmljYXRpb24gZmFpbGVkIGZvciAkcmVsLiBOb3RoaW5nIHdhcyBpbnN0YWxsZWQuIn0KICAgICRkb3dubG9hZGVkICs9IFtwc2N1c3RvbW9iamVjdF1Ae3BhdGg9JHJlbDt0ZW1wPSRkZXN0fQp9CgpOZXctSXRlbSAtSXRlbVR5cGUgRGlyZWN0b3J5IC1Gb3JjZSAtUGF0aCAkQmFja3VwcyB8IE91dC1OdWxsCiRzdGFtcD1HZXQtRGF0ZSAtRm9ybWF0ICJ5eXl5TU1kZC1ISG1tc3MiCiRiYWNrdXA9Sm9pbi1QYXRoICRCYWNrdXBzICgid2Vtb3RlLSIrJGN1cnJlbnQrIi0iKyRzdGFtcCsiLnppcCIpCiRpdGVtcz1AKCkKZm9yZWFjaCgkbiBpbiBAKCJhcHAiLCJWRVJTSU9OIiwicmVxdWlyZW1lbnRzLnR4dCIsIlVQREFURV9XRU1PVEUuY21kIiwidXBkYXRlX3dlbW90ZS5wczEiLCJ1cGRhdGVfc291cmNlLnR4dCIpKXsKICAgICRwPUpvaW4tUGF0aCAkUm9vdCAkbgogICAgaWYoVGVzdC1QYXRoICRwKXskaXRlbXMrPSRwfQp9CmlmKCRpdGVtcy5Db3VudCAtZ3QgMCl7Q29tcHJlc3MtQXJjaGl2ZSAtUGF0aCAkaXRlbXMgLURlc3RpbmF0aW9uUGF0aCAkYmFja3VwIC1Gb3JjZX0KClN0b3AtV2Vtb3RlClN0YXJ0LVNsZWVwIC1NaWxsaXNlY29uZHMgNTAwCgpmb3JlYWNoKCRmIGluICRkb3dubG9hZGVkKXsKICAgICRkZXN0PUpvaW4tUGF0aCAkUm9vdCAkZi5wYXRoCiAgICAkcGFyZW50PVNwbGl0LVBhdGggLVBhcmVudCAkZGVzdAogICAgaWYoJHBhcmVudCl7TmV3LUl0ZW0gLUl0ZW1UeXBlIERpcmVjdG9yeSAtRm9yY2UgLVBhdGggJHBhcmVudCB8IE91dC1OdWxsfQogICAgQ29weS1JdGVtIC1MaXRlcmFsUGF0aCAkZi50ZW1wIC1EZXN0aW5hdGlvbiAkZGVzdCAtRm9yY2UKfQoKW0lPLkZpbGVdOjpXcml0ZUFsbFRleHQoJFZlcnNpb25GaWxlLCRsYXRlc3QrImBuIiwoTmV3LU9iamVjdCBTeXN0ZW0uVGV4dC5VVEY4RW5jb2RpbmcoJGZhbHNlKSkpClN0YXJ0LVdlbW90ZQpTdGFydC1TbGVlcCAtU2Vjb25kcyAyCgpXcml0ZS1Ib3N0ICJXRU1PVEUgdiRsYXRlc3QgUkVBRFkiIC1Gb3JlZ3JvdW5kQ29sb3IgR3JlZW4KV3JpdGUtSG9zdCAiQmFja3VwOiAkYmFja3VwIgpXcml0ZS1Ib3N0ICJGdXR1cmUgdXBkYXRlczogZG91YmxlLWNsaWNrIFVQREFURV9XRU1PVEUuY21kLiIgLUZvcmVncm91bmRDb2xvciBDeWFuClJlbW92ZS1JdGVtICRUZW1wIC1SZWN1cnNlIC1Gb3JjZSAtRXJyb3JBY3Rpb24gU2lsZW50bHlDb250aW51ZQo="))
-[IO.File]::WriteAllBytes((Join-Path $Root "UPDATE_WEMOTE.cmd"),[Convert]::FromBase64String("QGVjaG8gb2ZmCnRpdGxlIFdFTU9URSBVcGRhdGUKY2QgL2QgIiV+ZHAwIgpwb3dlcnNoZWxsIC1Ob1Byb2ZpbGUgLUV4ZWN1dGlvblBvbGljeSBCeXBhc3MgLUZpbGUgIiV+ZHAwdXBkYXRlX3dlbW90ZS5wczEiCmVjaG8uCnBhdXNlCg=="))
-[IO.File]::WriteAllBytes((Join-Path $Root "update_source.txt"),[Convert]::FromBase64String("aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3NjemFocmEvd2Vtb3RlL21haW4vYnJpZGdlL2xhdGVzdC5qc29uCg=="))
-[IO.File]::WriteAllText((Join-Path $Root "VERSION"),"0.5.1`n",$utf8)
-
-# Update visible local version without replacing the rest of the working app.
-$index=Join-Path $Root "app\static\index.html"
-if(Test-Path $index){
-  $s=Get-Content $index -Raw
-  $s=[regex]::Replace($s,'<title>WEMOTE v[^<]+</title>','<title>WEMOTE v0.5.1</title>')
-  $s=[regex]::Replace($s,'<h1>WEMOTE v[^<]+</h1>','<h1>WEMOTE v0.5.1</h1>',1)
-  $s=[regex]::Replace($s,'(<span id="appVersion">)[^<]*(</span>)','$10.5.1$2')
-  [IO.File]::WriteAllText($index,$s,$utf8)
+$downloads = @{
+    "UPDATE_WEMOTE.cmd" = "$Base/UPDATE_WEMOTE.cmd"
+    "update_wemote.ps1" = "$Base/update_wemote.ps1"
+    "update_source.txt" = "$Base/update_source.txt"
+    "remote_proxy.py" = "$Base/remote_proxy.py"
+    "run_windows.ps1" = "$Base/run_windows.ps1"
+    "setup_remote_tailscale.ps1" = "$Base/setup_remote_tailscale.ps1"
+    "SETUP_REMOTE_TAILSCALE.cmd" = "$Base/SETUP_REMOTE_TAILSCALE.cmd"
 }
 
-$main=Join-Path $Root "app\main.py"
-if(Test-Path $main){
-  $s=Get-Content $main -Raw
-  $s=[regex]::Replace($s,'version="[^"]+"','version="0.5.1"',1)
-  [IO.File]::WriteAllText($main,$s,$utf8)
+foreach ($name in $downloads.Keys) {
+    Write-Host "Getting $name..."
+    Invoke-WebRequest -Uri $downloads[$name] -OutFile (Join-Path $Root $name) -TimeoutSec 60
 }
 
-Write-Host "Permanent GitHub updater installed." -ForegroundColor Green
-Write-Host "Restarting WEMOTE..." -ForegroundColor Yellow
+[IO.File]::WriteAllText((Join-Path $Root "VERSION"), "0.5.2`n", $utf8)
 
-$conns=Get-NetTCPConnection -LocalPort 8765 -State Listen -ErrorAction SilentlyContinue
-foreach($c in $conns){
-  $p=Get-CimInstance Win32_Process -Filter "ProcessId=$($c.OwningProcess)" -ErrorAction SilentlyContinue
-  if($p -and $p.CommandLine -match "uvicorn" -and $p.CommandLine -match "app\.main"){
-    Stop-Process -Id $c.OwningProcess -Force -ErrorAction SilentlyContinue
-  }
+$main = Join-Path $Root "app\main.py"
+if (Test-Path $main) {
+    $s = Get-Content $main -Raw
+    $s = [regex]::Replace($s, 'version="[^"]+"', 'version="0.5.2"', 1)
+    [IO.File]::WriteAllText($main, $s, $utf8)
 }
-Start-Sleep -Milliseconds 500
+
+$index = Join-Path $Root "app\static\index.html"
+if (Test-Path $index) {
+    $s = Get-Content $index -Raw
+    $s = [regex]::Replace($s, '<title>WEMOTE v[^<]+</title>', '<title>WEMOTE v0.5.2</title>')
+    $s = [regex]::Replace($s, '<h1>WEMOTE v[^<]+</h1>', '<h1>WEMOTE v0.5.2</h1>', 1)
+    $s = [regex]::Replace($s, '(<span id="appVersion">)[^<]*(</span>)', '$10.5.2$2')
+    [IO.File]::WriteAllText($index, $s, $utf8)
+}
+
+Write-Host "Restarting WEMOTE with the secure remote proxy..." -ForegroundColor Yellow
+$conns = Get-NetTCPConnection -LocalPort 8765 -State Listen -ErrorAction SilentlyContinue
+foreach ($c in $conns) {
+    $p = Get-CimInstance Win32_Process -Filter "ProcessId=$($c.OwningProcess)" -ErrorAction SilentlyContinue
+    if ($p -and $p.CommandLine -match "uvicorn" -and $p.CommandLine -match "app\.main") {
+        Stop-Process -Id $c.OwningProcess -Force -ErrorAction SilentlyContinue
+    }
+}
+Start-Sleep -Milliseconds 700
 Start-Process -FilePath (Join-Path $Root "RUN_CONTROLLER.cmd") -WorkingDirectory $Root
 Start-Sleep -Seconds 2
 
+Write-Host "WEMOTE v0.5.2 controller updated." -ForegroundColor Green
+Write-Host "Starting one-time Tailscale remote setup..." -ForegroundColor Cyan
+Start-Process -FilePath (Join-Path $Root "SETUP_REMOTE_TAILSCALE.cmd") -WorkingDirectory $Root
 Write-Host ""
-Write-Host "WEMOTE v0.5.1 READY" -ForegroundColor Green
-Write-Host "From now on, use UPDATE_WEMOTE.cmd already in this folder." -ForegroundColor Cyan
+Write-Host "Bootstrap complete." -ForegroundColor Green
+Write-Host "If Tailscale asks for Funnel/HTTPS approval, approve it once and rerun SETUP_REMOTE_TAILSCALE.cmd." -ForegroundColor Yellow
