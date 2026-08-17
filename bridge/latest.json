@@ -1,7 +1,7 @@
 {
-  "version": "0.5.3",
+  "version": "0.5.4",
   "published": "2026-08-17",
-  "notes": "Fix schedule form polling overwrite, clarify scheduler status, and preserve commanded ON state.",
-  "script_url": "https://raw.githubusercontent.com/sczahra/wemote/main/bridge/releases/0.5.3/0.5.3.ps1",
-  "sha256": "a96eecc9845b07f154640f5c432adcf0c18fe6bc507a63d2dd7879d3e978dcc9"
+  "notes": "Fix release verification, schedule polling overwrite, ON-state reporting, and add reversible folder cleanup.",
+  "script_url": "https://raw.githubusercontent.com/sczahra/wemote/main/bridge/releases/0.5.4/0.5.4.ps1",
+  "sha256": "96559010c129db170b9a4b42cb00abf772793bbd674b9cdc940ee2b14122d802"
 }
