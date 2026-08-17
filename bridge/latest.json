@@ -1,5 +1,7 @@
 {
-  "version": "0.5.1",
+  "version": "0.5.2",
   "published": "2026-08-16",
-  "files": []
+  "notes": "Tailscale Funnel remote setup with stable ts.net URL and token-protected remote proxy.",
+  "script_url": "",
+  "sha256": ""
 }
