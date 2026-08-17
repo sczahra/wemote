@@ -1,5 +1,6 @@
 (() => {
-  const params = new URLSearchParams(location.search);
+  const hash = location.hash.startsWith('#') ? location.hash.slice(1) : '';
+  const params = new URLSearchParams(hash);
   const bridge = params.get('bridge');
   const token = params.get('token');
   let changed = false;
