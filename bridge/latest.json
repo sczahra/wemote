@@ -1,7 +1,7 @@
 {
-  "version": "0.5.4",
+  "version": "0.5.5",
   "published": "2026-08-17",
-  "notes": "Fix release verification, schedule polling overwrite, ON-state reporting, and add reversible folder cleanup.",
-  "script_url": "https://raw.githubusercontent.com/sczahra/wemote/main/bridge/releases/0.5.4/0.5.4.ps1",
-  "sha256": "96559010c129db170b9a4b42cb00abf772793bbd674b9cdc940ee2b14122d802"
+  "notes": "Fix updater verification path, install schedule polling and ON-state fixes, and add reversible folder cleanup.",
+  "script_url": "https://raw.githubusercontent.com/sczahra/wemote/main/bridge/releases/0.5.5/0.5.5.ps1",
+  "sha256": "6cdd25a430202113ad3588d357b35d1b04933e5cc4f8198d01d716307a174c9c"
 }
