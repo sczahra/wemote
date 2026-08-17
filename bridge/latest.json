@@ -1,7 +1,7 @@
 {
-  "version": "0.5.5",
+  "version": "0.5.6",
   "published": "2026-08-17",
-  "notes": "Fix updater verification path, install schedule polling and ON-state fixes, and add reversible folder cleanup.",
-  "script_url": "https://raw.githubusercontent.com/sczahra/wemote/main/bridge/releases/0.5.5/0.5.5.ps1",
-  "sha256": "6cdd25a430202113ad3588d357b35d1b04933e5cc4f8198d01d716307a174c9c"
+  "notes": "Simplify WEMOTE into a clearer status-first interface with meaningful color, cleaner schedule controls, remote status, and last-command feedback.",
+  "script_url": "https://raw.githubusercontent.com/sczahra/wemote/main/bridge/releases/0.5.6/0.5.6.ps1",
+  "sha256": "1d6070ffb0bf1ff9a3e708da69a1a86832b65dbdd1a92a662e07845010dc9bd1"
 }
