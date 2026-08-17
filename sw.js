@@ -1,4 +1,4 @@
-const CACHE = "wemote-v0.5.3";
+const CACHE = "wemote-v0.5.6";
 const SHELL = ["/", "/styles.css", "/remote-setup.js", "/app.js", "/manifest.webmanifest"];
 self.addEventListener("install", event => {
   self.skipWaiting();
