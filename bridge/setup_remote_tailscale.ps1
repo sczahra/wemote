@@ -73,7 +73,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "Public bridge: $PublicUrl" -ForegroundColor Green
-$SetupUrl = "$PagesUrl/?bridge=$([Uri]::EscapeDataString($PublicUrl))&token=$([Uri]::EscapeDataString($Token))"
+$SetupUrl = "$PagesUrl/#bridge=$([Uri]::EscapeDataString($PublicUrl))&token=$([Uri]::EscapeDataString($Token))"
 Write-Host "Opening WEMOTE and linking this browser automatically..." -ForegroundColor Cyan
 Start-Process $SetupUrl
 Write-Host ""
